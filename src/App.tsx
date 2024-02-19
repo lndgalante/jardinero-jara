@@ -147,8 +147,8 @@ export default function MyApp() {
           </div>}
 
           <Tooltip content={isAnimating ? 'Dale stop para moverte con el slider y ver el antes y después' : 'Dale play para animar automáticamente el antes y después'}>
-            <IconButton className="absolute bottom-6 right-6 !cursor-pointer" onClick={toggleAnimation} variant="surface">
-              {isAnimating ? <FaStop className="w-4 h-4" /> : <FaPlay className="w-4 h-4" />}
+            <IconButton className="absolute bottom-5 right-5 !cursor-pointer" onClick={toggleAnimation} variant="surface" size="1">
+              {isAnimating ? <FaStop className="w-3 h-3" /> : <FaPlay className="w-3 h-3" />}
             </IconButton>
           </Tooltip>
         </article>
