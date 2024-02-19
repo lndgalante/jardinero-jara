@@ -1,9 +1,9 @@
 
 
 import { nanoid } from "nanoid";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaWhatsapp, FaPlay, FaStop } from "react-icons/fa";
 import { ReactNode, useRef, useEffect, useState } from "react";
-import { GiBamboo, GiCycle, GiGardeningShears, GiGrass, GiHighGrass, GiPauseButton, GiPlantWatering, GiPlayButton } from "react-icons/gi";
+import { GiBamboo, GiCycle, GiGardeningShears, GiGrass, GiHighGrass, GiPlantWatering } from "react-icons/gi";
 
 import { Button, Badge, Callout, Link, IconButton, Tooltip } from "@radix-ui/themes";
 import { ReactCompareSlider, ReactCompareSliderImage, useReactCompareSliderRef } from "react-compare-slider";
@@ -121,7 +121,7 @@ export default function MyApp() {
           </Link>
         </aside>
 
-        <article className="bg-green-50 p-3 rounded-md relative">
+        <article className="bg-green-50 p-3 rounded-md relative group">
           <ReactCompareSlider
             ref={reactCompareSliderRef}
             style={{
@@ -142,9 +142,13 @@ export default function MyApp() {
             }
           />
 
+          {isAnimating ? null : <div className="absolute left-0 right-0 bottom-4 text-center group-hover:opacity-100 opacity-0 transition">
+            <span className="text-white text-xs bg-black p-1 opacity-80">Movete con el slider</span>
+          </div>}
+
           <Tooltip content={isAnimating ? 'Dale stop para moverte con el slider y ver el antes y después' : 'Dale play para animar automáticamente el antes y después'}>
             <IconButton className="absolute bottom-6 right-6 !cursor-pointer" onClick={toggleAnimation} variant="surface">
-              {isAnimating ? <GiPauseButton className="w-4 h-4" /> : <GiPlayButton className="w-4 h-4" />}
+              {isAnimating ? <FaStop className="w-4 h-4" /> : <FaPlay className="w-4 h-4" />}
             </IconButton>
           </Tooltip>
         </article>
