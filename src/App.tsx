@@ -6,12 +6,11 @@ import { ReactNode, useRef, useEffect, useState } from "react";
 import { GiBamboo, GiCycle, GiGardeningShears, GiGrass, GiHighGrass, GiPauseButton, GiPlantWatering, GiPlayButton } from "react-icons/gi";
 
 import { Button, Badge, Callout, Link, IconButton, Tooltip } from "@radix-ui/themes";
-import { ReactCompareSlider, ReactCompareSliderImage, useReactCompareSliderRef, ReactCompareSliderHandle, styleFitContainer } from "react-compare-slider";
+import { ReactCompareSlider, ReactCompareSliderImage, useReactCompareSliderRef } from "react-compare-slider";
 
 // images
 import sampleOneAfter from './assets/sample-1-after.webp'
 import sampleOneBefore from './assets/sample-1-before.webp'
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 function CompareSliderImageWrapper({ time, children }: { time: 'before' | 'after', children: ReactNode }) {
   return (
