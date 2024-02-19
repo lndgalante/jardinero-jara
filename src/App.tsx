@@ -45,8 +45,8 @@ function generateWhatsAppLink() {
 const whatsappLink = generateWhatsAppLink()
 
 export default function MyApp() {
-  const requestRef = useRef();
-  const startRef = useRef<null | number>(null);
+  const requestRef = useRef<number | null | undefined>();
+  const startRef = useRef<number | null | undefined>(null);
   const [isAnimating, setIsAnimating] = useState(true);
 
   const reactCompareSliderRef = useReactCompareSliderRef();
@@ -60,7 +60,7 @@ export default function MyApp() {
     const startPosition = 100;
     const endPosition = 0;
 
-    const animate = (timestamp) => {
+    const animate: FrameRequestCallback = (timestamp) => {
       if (!isAnimating) {
         startRef.current = null;
         return;
@@ -70,7 +70,7 @@ export default function MyApp() {
         startRef.current = timestamp;
       }
 
-      const progress = (timestamp - startRef.current) / duration;
+      const progress = (timestamp - (startRef.current ?? 0)) / duration;
       const position = startPosition + (endPosition - startPosition) * Math.sin(progress * Math.PI);
 
       reactCompareSliderRef.current?.setPosition(position);
@@ -86,7 +86,9 @@ export default function MyApp() {
     requestRef.current = requestAnimationFrame(animate);
 
     return () => {
-      cancelAnimationFrame(requestRef.current);
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+      }
     };
   }, [isAnimating]);
 
