@@ -2,16 +2,18 @@
 
 import { nanoid } from "nanoid";
 import { FaWhatsapp } from "react-icons/fa";
-import { GiBamboo, GiCycle, GiGardeningShears, GiGrass, GiHighGrass, GiPlantWatering } from "react-icons/gi";
+import { ReactNode, useRef, useEffect, useState } from "react";
+import { GiBamboo, GiCycle, GiGardeningShears, GiGrass, GiHighGrass, GiPauseButton, GiPlantWatering, GiPlayButton } from "react-icons/gi";
 
-import { Button, Badge, Callout, Link } from "@radix-ui/themes";
-import { ReactCompareSlider, ReactCompareSliderImage } from "react-compare-slider";
+import { Button, Badge, Callout, Link, IconButton, Tooltip } from "@radix-ui/themes";
+import { ReactCompareSlider, ReactCompareSliderImage, useReactCompareSliderRef, ReactCompareSliderHandle, styleFitContainer } from "react-compare-slider";
 
 // images
 import sampleOneAfter from './assets/sample-1-after.webp'
 import sampleOneBefore from './assets/sample-1-before.webp'
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
-function CompareSliderImageWrapper({ time, children }: { time: 'before' | 'after', children: React.ReactNode }) {
+function CompareSliderImageWrapper({ time, children }: { time: 'before' | 'after', children: ReactNode }) {
   return (
     <div className="relative h-full">
       <Badge color={time === 'before' ? 'tomato' : 'green'} className="absolute top-2 left-2" size="2" variant="surface">
@@ -44,13 +46,58 @@ function generateWhatsAppLink() {
 const whatsappLink = generateWhatsAppLink()
 
 export default function MyApp() {
+  const requestRef = useRef();
+  const startRef = useRef<null | number>(null);
+  const [isAnimating, setIsAnimating] = useState(true);
+
+  const reactCompareSliderRef = useReactCompareSliderRef();
+
+  const toggleAnimation = () => {
+    setIsAnimating(!isAnimating)
+  };
+
+  useEffect(() => {
+    const duration = 8000;
+    const startPosition = 100;
+    const endPosition = 0;
+
+    const animate = (timestamp) => {
+      if (!isAnimating) {
+        startRef.current = null;
+        return;
+      }
+
+      if (startRef.current === null) {
+        startRef.current = timestamp;
+      }
+
+      const progress = (timestamp - startRef.current) / duration;
+      const position = startPosition + (endPosition - startPosition) * Math.sin(progress * Math.PI);
+
+      reactCompareSliderRef.current?.setPosition(position);
+
+      if (progress < 1) {
+        requestRef.current = requestAnimationFrame(animate);
+      } else {
+        startRef.current = null;
+        requestRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    requestRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(requestRef.current);
+    };
+  }, [isAnimating]);
+
   return (
     <main className="min-h-screen md:h-screen w-full p-2 bg-green-950 flex items-center">
       <section className="container flex flex-col lg:flex-row gap-4 m-auto max-h-[720px]">
         <aside className="w-full lg:max-w-xs gap-4 lg:gap-0 flex flex-col justify-between bg-green-50 p-3 rounded-md">
           <header className="text-center">
-            <h1 className="text-3xl mb-2">Jardinero Jara</h1>
-            <h2 className="text-lg uppercase text-balance">Cuidado y Mantenimiento de Espacios Verdes</h2>
+            <h1 className="text-4xl mb-1">Jardinero Jara</h1>
+            <h2 className="text-sm uppercase text-balance">Cuidado y Mantenimiento de Espacios Verdes</h2>
           </header>
 
           <div className="flex flex-col gap-2">
@@ -73,15 +120,15 @@ export default function MyApp() {
           </Link>
         </aside>
 
-
-        <article className="bg-green-50 p-3 rounded-md">
+        <article className="bg-green-50 p-3 rounded-md relative">
           <ReactCompareSlider
-            position={90}
+            ref={reactCompareSliderRef}
             style={{
               width: '100%',
               height: '100%',
-              borderRadius: '0.375rem'
+              borderRadius: '0.375rem',
             }}
+            disabled={isAnimating}
             itemOne={
               <CompareSliderImageWrapper time="before">
                 <ReactCompareSliderImage src={sampleOneBefore} alt="Antes" className="rounded-md" />
@@ -93,6 +140,12 @@ export default function MyApp() {
               </CompareSliderImageWrapper>
             }
           />
+
+          <Tooltip content={isAnimating ? 'Dale stop para moverte con el slider y ver el antes y después' : 'Dale play para animar automáticamente el antes y después'}>
+            <IconButton className="absolute bottom-6 right-6 !cursor-pointer" onClick={toggleAnimation} variant="surface">
+              {isAnimating ? <GiPauseButton className="w-4 h-4" /> : <GiPlayButton className="w-4 h-4" />}
+            </IconButton>
+          </Tooltip>
         </article>
       </section>
     </main>

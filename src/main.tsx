@@ -11,7 +11,7 @@ import App from "./App.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Theme accentColor="green" grayColor="gray" panelBackground="solid" scaling="110%" radius="large">
+    <Theme accentColor="grass" grayColor="gray" panelBackground="solid" scaling="110%" radius="large">
       <App />
     </Theme>
   </React.StrictMode>,
