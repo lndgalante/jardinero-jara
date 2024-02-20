@@ -10,6 +10,7 @@ import { ReactCompareSlider, ReactCompareSliderImage, useReactCompareSliderRef }
 import sampleOneAfter from "./assets/sample-1-after.webp";
 import sampleOneBefore from "./assets/sample-1-before.webp";
 
+// components
 function CompareSliderImageWrapper({ time, children }: { time: "before" | "after"; children: ReactNode }) {
   return (
     <div className="relative h-full">
@@ -26,6 +27,14 @@ function CompareSliderImageWrapper({ time, children }: { time: "before" | "after
   );
 }
 
+// utils
+function generateWhatsAppLink() {
+  const phone = "543442604355";
+  const message = "Hola 👋, te quería consultar por los servicios de jardinería 🪴";
+
+  return `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
+}
+
 // constants
 const services = [
   { label: "Cortes de césped", icon: <GiHighGrass className="h-6 w-6" /> },
@@ -36,63 +45,62 @@ const services = [
   { label: "Asesoramiento para tus plantas", icon: <GiPlantWatering className="h-6 w-6" /> },
 ].map((service) => ({ ...service, id: nanoid() }));
 
-// utils
-function generateWhatsAppLink() {
-  const phone = "543442604355";
-  const message = "Hola 👋, te quería consultar por los servicios de jardinería 🪴";
-
-  return `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
-}
-
 const whatsappLink = generateWhatsAppLink();
 
 export default function MyApp() {
+  // react hooks
+  const [isAnimating, setIsAnimating] = useState(true);
   const requestRef = useRef<number | null | undefined>();
   const startRef = useRef<number | null | undefined>(null);
-  const [isAnimating, setIsAnimating] = useState(true);
 
+  // react slider
   const reactCompareSliderRef = useReactCompareSliderRef();
 
-  const toggleAnimation = () => {
+  // handler
+  function handleToggleAnimation(): void {
     setIsAnimating(!isAnimating);
-  };
+  }
 
-  useEffect(() => {
-    const duration = 8000;
-    const startPosition = 100;
-    const endPosition = 0;
+  // effects
+  useEffect(
+    function animateSlider() {
+      const duration = 8000;
+      const startPosition = 100;
+      const endPosition = 0;
 
-    const animate: FrameRequestCallback = (timestamp) => {
-      if (!isAnimating) {
-        startRef.current = null;
-        return;
-      }
+      const animate: FrameRequestCallback = (timestamp) => {
+        if (!isAnimating) {
+          startRef.current = null;
+          return;
+        }
 
-      if (startRef.current === null) {
-        startRef.current = timestamp;
-      }
+        if (startRef.current === null) {
+          startRef.current = timestamp;
+        }
 
-      const progress = (timestamp - (startRef.current ?? 0)) / duration;
-      const position = startPosition + (endPosition - startPosition) * Math.sin(progress * Math.PI);
+        const progress = (timestamp - (startRef.current ?? 0)) / duration;
+        const position = startPosition + (endPosition - startPosition) * Math.sin(progress * Math.PI);
 
-      reactCompareSliderRef.current?.setPosition(position);
+        reactCompareSliderRef.current?.setPosition(position);
 
-      if (progress < 1) {
-        requestRef.current = requestAnimationFrame(animate);
-      } else {
-        startRef.current = null;
-        requestRef.current = requestAnimationFrame(animate);
-      }
-    };
+        if (progress < 1) {
+          requestRef.current = requestAnimationFrame(animate);
+        } else {
+          startRef.current = null;
+          requestRef.current = requestAnimationFrame(animate);
+        }
+      };
 
-    requestRef.current = requestAnimationFrame(animate);
+      requestRef.current = requestAnimationFrame(animate);
 
-    return () => {
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current);
-      }
-    };
-  }, [isAnimating]);
+      return () => {
+        if (requestRef.current) {
+          cancelAnimationFrame(requestRef.current);
+        }
+      };
+    },
+    [isAnimating],
+  );
 
   return (
     <main className="flex min-h-screen w-full items-center bg-green-950 p-2 md:h-screen">
@@ -155,7 +163,7 @@ export default function MyApp() {
           >
             <IconButton
               className="absolute bottom-5 right-5 !cursor-pointer"
-              onClick={toggleAnimation}
+              onClick={handleToggleAnimation}
               variant="surface"
               size="1"
             >
