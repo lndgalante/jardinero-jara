@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Theme } from "@radix-ui/themes";
 
 // styles
-import "./tailwind.css"
+import "./tailwind.css";
 import "@radix-ui/themes/styles.css";
 
 // internals
