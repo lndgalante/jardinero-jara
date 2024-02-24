@@ -133,7 +133,7 @@ export default function MyApp() {
         <aside className="flex w-full flex-col justify-between gap-4 rounded-md bg-[#f0fdf4] p-3 lg:max-w-xs lg:gap-0">
           <header className="text-center">
             <h1 className="mb-1 text-5xl font-display">Jardinero Jara</h1>
-            <h2 className="text-balance text-xs uppercase">Cuidado y Mantenimiento de Espacios Verdes</h2>
+            <h2 className="text-balance text-xs uppercase font-medium">Cuidado y Mantenimiento de Espacios Verdes</h2>
           </header>
 
           <div className="flex flex-col gap-2">
