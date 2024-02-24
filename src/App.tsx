@@ -7,19 +7,19 @@ import { Button, Badge, Callout, Link, IconButton, Tooltip } from "@radix-ui/the
 import { ReactCompareSlider, ReactCompareSliderImage, useReactCompareSliderRef } from "react-compare-slider";
 
 // images
-import canterosPodadosAfter from "./assets/canteros-podados.png";
-import canterosPodadosBefore from "./assets/canteros-s_podar.png";
-import parraPodadaAfter from "./assets/parra-podada.png";
-import parraPodadaBefore from "./assets/parra-s_podar.png";
-import veredaLimpiaAfter from "./assets/vereda-limpia.png";
-import veredaLimpiaBefore from "./assets/vereda-sucia.png";
+import canterosPodadosAfter from "/canteros-podados.png";
+import canterosPodadosBefore from "/canteros-s_podar.png";
+import parraPodadaAfter from "/parra-podada.png";
+import parraPodadaBefore from "/parra-s_podar.png";
+import veredaLimpiaAfter from "/vereda-limpia.png";
+import veredaLimpiaBefore from "/vereda-sucia.png";
 
-import bignoniaPodadaAfter from "./assets/Bignonia-podada-1.png";
-import bignoniaPodadaBefore from "./assets/Bignonia-s_podar-1.png";
-import vetiverPodadoAfter from "./assets/vetiver-podado.png";
-import vetiverPodadoBefore from "./assets/vetiver-s_podar.png";
-import bignoniaPodadaAfter2 from "./assets/Bignonia-podad-2.png";
-import bignoniaPodadaBefore2 from "./assets/Bignonia-s_podar-2.png";
+import bignoniaPodadaAfter from "/Bignonia-podada-1.png";
+import bignoniaPodadaBefore from "/Bignonia-s_podar-1.png";
+import vetiverPodadoAfter from "/vetiver-podado.png";
+import vetiverPodadoBefore from "/vetiver-s_podar.png";
+import bignoniaPodadaAfter2 from "/Bignonia-podad-2.png";
+import bignoniaPodadaBefore2 from "/Bignonia-s_podar-2.png";
 
 const imagePairs = [[canterosPodadosAfter, canterosPodadosBefore], [parraPodadaAfter, parraPodadaBefore], [veredaLimpiaAfter, veredaLimpiaBefore],
 [bignoniaPodadaAfter, bignoniaPodadaBefore],
