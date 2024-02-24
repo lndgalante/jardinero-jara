@@ -128,9 +128,9 @@ export default function MyApp() {
   const imagePair = [imagePairs[currentPairIndex][0], imagePairs[currentPairIndex][1]]
 
   return (
-    <main className="flex min-h-screen w-full items-center bg-green-950 p-2 md:h-screen">
+    <main className="flex min-h-screen w-full items-center bg-[#004643] p-2 md:h-screen">
       <section className="container m-auto flex max-h-[720px] flex-col gap-4 lg:flex-row max-w-4xl" >
-        <aside className="flex w-full flex-col justify-between gap-4 rounded-md bg-green-50 p-3 lg:max-w-xs lg:gap-0">
+        <aside className="flex w-full flex-col justify-between gap-4 rounded-md bg-[#f0fdf4] p-3 lg:max-w-xs lg:gap-0">
           <header className="text-center">
             <h1 className="mb-1 text-4xl">Jardinero Jara</h1>
             <h2 className="text-balance text-sm uppercase">Cuidado y Mantenimiento de Espacios Verdes</h2>
@@ -152,7 +152,7 @@ export default function MyApp() {
           </Link>
         </aside>
 
-        <article className="group relative rounded-md bg-green-50 p-3">
+        <article className="group relative rounded-md bg-[#f0fdf4] p-3">
           <ReactCompareSlider
             ref={reactCompareSliderRef}
             style={{
