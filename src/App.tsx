@@ -7,8 +7,26 @@ import { Button, Badge, Callout, Link, IconButton, Tooltip } from "@radix-ui/the
 import { ReactCompareSlider, ReactCompareSliderImage, useReactCompareSliderRef } from "react-compare-slider";
 
 // images
-import sampleOneAfter from "./assets/sample-1-after.webp";
-import sampleOneBefore from "./assets/sample-1-before.webp";
+import canterosPodadosAfter from "./assets/canteros-podados.png";
+import canterosPodadosBefore from "./assets/canteros-s_podar.png";
+import parraPodadaAfter from "./assets/parra-podada.png";
+import parraPodadaBefore from "./assets/parra-s_podar.png";
+import veredaLimpiaAfter from "./assets/vereda-limpia.png";
+import veredaLimpiaBefore from "./assets/vereda-sucia.png";
+
+import bignoniaPodadaAfter from "./assets/Bignonia-podada-1.png";
+import bignoniaPodadaBefore from "./assets/Bignonia-s_podar-1.png";
+import vetiverPodadoAfter from "./assets/vetiver-podado.png";
+import vetiverPodadoBefore from "./assets/vetiver-s_podar.png";
+import bignoniaPodadaAfter2 from "./assets/Bignonia-podad-2.png";
+import bignoniaPodadaBefore2 from "./assets/Bignonia-s_podar-2.png";
+
+const imagePairs = [[canterosPodadosAfter, canterosPodadosBefore], [parraPodadaAfter, parraPodadaBefore], [veredaLimpiaAfter, veredaLimpiaBefore],
+[bignoniaPodadaAfter, bignoniaPodadaBefore],
+[vetiverPodadoAfter, vetiverPodadoBefore],
+[bignoniaPodadaAfter2, bignoniaPodadaBefore2]];
+
+
 
 // components
 function CompareSliderImageWrapper({ time, children }: { time: "before" | "after"; children: ReactNode }) {
@@ -48,8 +66,12 @@ const services = [
 const whatsappLink = generateWhatsAppLink();
 
 export default function MyApp() {
-  // react hooks
+  // react state hooks
   const [isAnimating, setIsAnimating] = useState(true);
+  const [currentPairIndex, setCurrentPairIndex] = useState(0);
+
+  // react ref hooks
+  const animationCompletedRef = useRef<boolean>(false);
   const requestRef = useRef<number | null | undefined>();
   const startRef = useRef<number | null | undefined>(null);
 
@@ -62,49 +84,52 @@ export default function MyApp() {
   }
 
   // effects
-  useEffect(
-    function animateSlider() {
-      const duration = 8000;
-      const startPosition = 100;
-      const endPosition = 0;
 
-      const animate: FrameRequestCallback = (timestamp) => {
-        if (!isAnimating) {
-          startRef.current = null;
-          return;
-        }
+  useEffect(() => {
+    const duration = 8000;
+    const startPosition = 100;
+    const endPosition = 0;
 
-        if (startRef.current === null) {
-          startRef.current = timestamp;
-        }
+    const animate: FrameRequestCallback = (timestamp) => {
+      if (!startRef.current) {
+        startRef.current = timestamp;
+      }
 
-        const progress = (timestamp - (startRef.current ?? 0)) / duration;
+      const elapsed = timestamp - startRef.current;
+      const progress = elapsed / duration;
+
+      if (progress >= 1) {
+        // If a full cycle is completed
+        animationCompletedRef.current = true;
+        // setIsAnimating(false); // Stop the animation
+        startRef.current = null; // Reset the start timestamp for the next cycle
+
+        // Update to the next set of images
+        setCurrentPairIndex((prevIndex) => (prevIndex + 1) % imagePairs.length);
+      } else {
         const position = startPosition + (endPosition - startPosition) * Math.sin(progress * Math.PI);
-
         reactCompareSliderRef.current?.setPosition(position);
+        requestRef.current = requestAnimationFrame(animate);
+      }
+    };
 
-        if (progress < 1) {
-          requestRef.current = requestAnimationFrame(animate);
-        } else {
-          startRef.current = null;
-          requestRef.current = requestAnimationFrame(animate);
-        }
-      };
-
+    if (isAnimating) {
       requestRef.current = requestAnimationFrame(animate);
+    }
 
-      return () => {
-        if (requestRef.current) {
-          cancelAnimationFrame(requestRef.current);
-        }
-      };
-    },
-    [isAnimating],
-  );
+    return () => {
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+      }
+    };
+  }, [isAnimating, currentPairIndex]);
+
+  // constants
+  const imagePair = [imagePairs[currentPairIndex][0], imagePairs[currentPairIndex][1]]
 
   return (
     <main className="flex min-h-screen w-full items-center bg-green-950 p-2 md:h-screen">
-      <section className="container m-auto flex max-h-[720px] flex-col gap-4 lg:flex-row">
+      <section className="container m-auto flex max-h-[720px] flex-col gap-4 lg:flex-row max-w-4xl" >
         <aside className="flex w-full flex-col justify-between gap-4 rounded-md bg-green-50 p-3 lg:max-w-xs lg:gap-0">
           <header className="text-center">
             <h1 className="mb-1 text-4xl">Jardinero Jara</h1>
@@ -138,12 +163,12 @@ export default function MyApp() {
             disabled={isAnimating}
             itemOne={
               <CompareSliderImageWrapper time="before">
-                <ReactCompareSliderImage src={sampleOneBefore} alt="Antes" className="rounded-md" />
+                <ReactCompareSliderImage src={imagePair[1]} alt="Después" className="rounded-md" />
               </CompareSliderImageWrapper>
             }
             itemTwo={
               <CompareSliderImageWrapper time="after">
-                <ReactCompareSliderImage src={sampleOneAfter} alt="Después" className="rounded-md" />
+                <ReactCompareSliderImage src={imagePair[0]} alt="Antes" className="rounded-md" />
               </CompareSliderImageWrapper>
             }
           />
