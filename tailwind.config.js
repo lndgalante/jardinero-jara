@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      display: ["Patrick Hand", "cursive"],
+    },
   },
   plugins: [],
 }
