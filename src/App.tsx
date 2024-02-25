@@ -11,9 +11,6 @@ import canterosPodadosAfter from "/canteros-podados.png";
 import canterosPodadosBefore from "/canteros-s_podar.png";
 import parraPodadaAfter from "/parra-podada.png";
 import parraPodadaBefore from "/parra-s_podar.png";
-import veredaLimpiaAfter from "/vereda-limpia.png";
-import veredaLimpiaBefore from "/vereda-sucia.png";
-
 import bignoniaPodadaAfter from "/Bignonia-podada-1.png";
 import bignoniaPodadaBefore from "/Bignonia-s_podar-1.png";
 import vetiverPodadoAfter from "/vetiver-podado.png";
@@ -21,12 +18,10 @@ import vetiverPodadoBefore from "/vetiver-s_podar.png";
 import bignoniaPodadaAfter2 from "/Bignonia-podad-2.png";
 import bignoniaPodadaBefore2 from "/Bignonia-s_podar-2.png";
 
-const imagePairs = [[canterosPodadosAfter, canterosPodadosBefore], [parraPodadaAfter, parraPodadaBefore], [veredaLimpiaAfter, veredaLimpiaBefore],
+const imagePairs = [[canterosPodadosAfter, canterosPodadosBefore], [parraPodadaAfter, parraPodadaBefore],
 [bignoniaPodadaAfter, bignoniaPodadaBefore],
 [vetiverPodadoAfter, vetiverPodadoBefore],
 [bignoniaPodadaAfter2, bignoniaPodadaBefore2]];
-
-
 
 // components
 function CompareSliderImageWrapper({ time, children }: { time: "before" | "after"; children: ReactNode }) {
