@@ -140,7 +140,7 @@ export default function MyApp() {
             ))}
           </div>
 
-          <Link href={whatsappLink} rel="noopener noreferrer" target="_blank" className="w-full">
+          <Link href={whatsappLink} rel="noopener noreferrer" target="_blank" className="w-full plausible-event-name=whatsapp">
             <Button size="4" className="w-full !cursor-pointer">
               <FaWhatsapp className="h-6 w-6" /> Contactar
             </Button>
